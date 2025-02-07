@@ -1,0 +1,37 @@
+// Firebase konfiguráció
+const firebaseConfig = {
+  apiKey: "your-api-key",
+  authDomain: "your-auth-domain",
+  projectId: "your-project-id",
+  storageBucket: "your-storage-bucket",
+  messagingSenderId: "your-sender-id",
+  appId: "your-app-id"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+// Feltöltés Firebase Storage-ba
+const storage = firebase.storage();
+
+function uploadImage() {
+    const fileInput = document.getElementById("imageUpload");
+    const file = fileInput.files[0];
+
+    if (file) {
+        const storageRef = storage.ref('images/' + file.name);
+        const uploadTask = storageRef.put(file);
+
+        uploadTask.on('state_changed', 
+            function(snapshot) {
+                // Optionally track the upload progress
+            }, 
+            function(error) {
+                console.error(error);
+            }, 
+            function() {
+                console.log("Fájl sikeresen feltöltve Firebase-re!");
+            });
+    } else {
+        alert("Kérlek válassz ki egy képet.");
+    }
+}
